@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding Buddy System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen font-sans">
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-navy shadow-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center shadow">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8z"/>
+          </svg>
+        </div>
+        <span class="text-white font-bold text-lg tracking-tight">Onboarding Buddy</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="headerDate" class="text-slate-300 text-sm hidden sm:block"></span>
+        <button id="btnAddTask" class="btn-primary flex items-center gap-2 text-sm px-4 py-2 rounded-lg">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span class="hidden sm:inline">Add Task</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO BANNER ===== -->
+  <section class="bg-navy-light border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-white">Welcome back, <span class="text-emerald-400">Alex Chen</span> 👋</h1>
+        <p class="text-slate-300 text-sm mt-1">Buddy: <span class="text-amber-400 font-medium">Jordan Rivera</span> · Day 7 of Onboarding</p>
+      </div>
+      <div class="flex gap-3">
+        <button id="btnSchedule" class="btn-secondary flex items-center gap-2 text-sm px-4 py-2 rounded-lg">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Schedule 1-on-1
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- Summary Cards -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 gap-4" aria-label="Summary Statistics">
+      <div class="stat-card">
+        <p class="stat-label">Total Tasks</p>
+        <p id="statTotal" class="stat-value text-slate-700">0</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Completed</p>
+        <p id="statCompleted" class="stat-value text-emerald-600">0</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">In Progress</p>
+        <p id="statInProgress" class="stat-value text-sky-600">0</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Pending</p>
+        <p id="statPending" class="stat-value text-amber-600">0</p>
+      </div>
+    </section>
+
+    <!-- Overall Progress -->
+    <section class="card" aria-label="Overall Progress">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-semibold text-slate-700">Overall Onboarding Progress</h2>
+        <span id="progressPercent" class="text-sm font-bold text-emerald-600">0%</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">
+        <div id="progressFill" class="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="flex gap-4 mt-4 flex-wrap">
+        <div class="flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Completed
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span> In Progress
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-500">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> Pending
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming 1-on-1 Sessions -->
+    <section class="card" aria-label="Scheduled Sessions">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-slate-700">Upcoming 1-on-1 Sessions</h2>
+        <span id="sessionCount" class="badge-slate text-xs">0 scheduled</span>
+      </div>
+      <ul id="sessionList" class="space-y-2">
+        <li class="empty-state text-center py-6 text-slate-400 text-sm" id="sessionEmpty">
+          No sessions scheduled yet. Click <strong>Schedule 1-on-1</strong> to add one.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Task Checklist -->
+    <section class="card" aria-label="Task Checklist">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <h2 class="font-semibold text-slate-700">Onboarding Checklist</h2>
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filters">
+          <div class="flex gap-1">
+            <button class="filter-btn active" data-filter-type="status" data-filter-value="all">All</button>
+            <button class="filter-btn" data-filter-type="status" data-filter-value="pending">Pending</button>
+            <button class="filter-btn" data-filter-type="status" data-filter-value="in-progress">In Progress</button>
+            <button class="filter-btn" data-filter-type="status" data-filter-value="completed">Completed</button>
+          </div>
+          <select id="categoryFilter" class="filter-select text-xs" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option value="Administrative">Administrative</option>
+            <option value="Technical">Technical</option>
+            <option value="Culture & Network">Culture & Network</option>
+          </select>
+        </div>
+      </div>
+
+      <ul id="taskList" class="space-y-2" role="list" aria-label="Task list">
+        <!-- Tasks rendered by JS -->
+      </ul>
+      <p id="taskEmpty" class="text-center py-8 text-slate-400 text-sm hidden">No tasks match the current filters.</p>
+    </section>
+
+  </main>
+
+  <!-- ===== MODAL: ADD / EDIT TASK ===== -->
+  <div id="taskModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTaskTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTaskTitle" class="text-base font-semibold text-slate-800">Add New Task</h3>
+        <button class="modal-close" id="closeTaskModal" aria-label="Close modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <form id="taskForm" class="modal-body space-y-4" novalidate>
+        <input type="hidden" id="taskId" />
+        <div class="form-group">
+          <label for="taskTitle" class="form-label">Task Title <span class="text-red-400">*</span></label>
+          <input type="text" id="taskTitle" class="form-input" placeholder="e.g. Complete IT equipment request" required />
+          <p class="form-error hidden" id="taskTitleError">Please enter a task title.</p>
+        </div>
+        <div class="form-group">
+          <label for="taskDescription" class="form-label">Description</label>
+          <textarea id="taskDescription" class="form-input resize-none" rows="2" placeholder="Optional details..."></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-group">
+            <label for="taskCategory" class="form-label">Category <span class="text-red-400">*</span></label>
+            <select id="taskCategory" class="form-input" required>
+              <option value="">Select category</option>
+              <option value="Administrative">Administrative</option>
+              <option value="Technical">Technical</option>
+              <option value="Culture & Network">Culture & Network</option>
+            </select>
+            <p class="form-error hidden" id="taskCategoryError">Please select a category.</p>
+          </div>
+          <div class="form-group">
+            <label for="taskWeek" class="form-label">Week</label>
+            <select id="taskWeek" class="form-input">
+              <option value="Week 1">Week 1</option>
+              <option value="Week 2">Week 2</option>
+              <option value="Week 3">Week 3</option>
+              <option value="Week 4">Week 4</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="taskStatus" class="form-label">Status</label>
+          <select id="taskStatus" class="form-input">
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="taskDueDate" class="form-label">Due Date</label>
+          <input type="date" id="taskDueDate" class="form-input" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancelTaskModal" class="btn-ghost">Cancel</button>
+          <button type="submit" class="btn-primary px-5 py-2 rounded-lg text-sm">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: SCHEDULE 1-on-1 ===== -->
+  <div id="scheduleModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalScheduleTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalScheduleTitle" class="text-base font-semibold text-slate-800">Schedule 1-on-1 Session</h3>
+        <button class="modal-close" id="closeScheduleModal" aria-label="Close modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <form id="scheduleForm" class="modal-body space-y-4" novalidate>
+        <input type="hidden" id="sessionId" />
+        <div class="form-group">
+          <label for="sessionTopic" class="form-label">Session Topic <span class="text-red-400">*</span></label>
+          <input type="text" id="sessionTopic" class="form-input" placeholder="e.g. Week 1 Check-in" required />
+          <p class="form-error hidden" id="sessionTopicError">Please enter a topic.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-group">
+            <label for="sessionDate" class="form-label">Date <span class="text-red-400">*</span></label>
+            <input type="date" id="sessionDate" class="form-input" required />
+            <p class="form-error hidden" id="sessionDateError">Please select a date.</p>
+          </div>
+          <div class="form-group">
+            <label for="sessionTime" class="form-label">Time <span class="text-red-400">*</span></label>
+            <input type="time" id="sessionTime" class="form-input" required />
+            <p class="form-error hidden" id="sessionTimeError">Please select a time.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sessionMedium" class="form-label">Medium</label>
+          <select id="sessionMedium" class="form-input">
+            <option value="Google Meet">Google Meet</option>
+            <option value="Zoom">Zoom</option>
+            <option value="Microsoft Teams">Microsoft Teams</option>
+            <option value="In-Person">In-Person</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sessionNotes" class="form-label">Notes</label>
+          <textarea id="sessionNotes" class="form-input resize-none" rows="2" placeholder="Agenda or preparation notes..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancelScheduleModal" class="btn-ghost">Cancel</button>
+          <button type="submit" class="btn-primary px-5 py-2 rounded-lg text-sm">Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
